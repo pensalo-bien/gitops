@@ -21,7 +21,7 @@ spec:
       hostPID: true
       containers:
       - name: wireguard-exporter
-        image: mindflavor/prometheus_wireguard_exporter:3.6.0
+        image: mindflavor/prometheus-wireguard-exporter:3.6.6
         args: ["--port", "9586"]
         securityContext:
           privileged: true
