@@ -46,4 +46,30 @@ spec:
             value:
               - key: "CriticalAddonsOnly"
                 operator: "Exists"
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: flux-system
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: ssh://git@github.com/pensalo-bien/gitops
+  ref:
+    branch: wireguard
+  secretRef:
+    name: gitops-auth
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux-system
+  namespace: flux-system
+spec:
+  interval: 1m
+  path: ./clusters/hub
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
 ```
