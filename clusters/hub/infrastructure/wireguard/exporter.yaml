@@ -52,22 +52,3 @@ spec:
     targetPort: 9586
   selector:
     app: wireguard-exporter
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: wireguard-exporter
-  namespace: monitoring
-  labels:
-    app: wireguard-exporter
-spec:
-  selector:
-    matchLabels:
-      app: wireguard-exporter
-  namespaceSelector:
-    matchNames:
-      - monitoring
-  endpoints:
-    - port: metrics
-      interval: 30s
-      path: /metrics

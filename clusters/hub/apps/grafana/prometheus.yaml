@@ -11,6 +11,10 @@ data:
       - job_name: traefik
         static_configs:
           - targets: ['traefik.kube-system.svc.cluster.local:9100']
+      - job_name: 'wireguard-exporter'
+        static_configs:
+          - targets:
+            - 10.1.1.67:9586
 ---
 apiVersion: apps/v1
 kind: Deployment
