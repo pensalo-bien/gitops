@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: wireguard-exporter
+  namespace: monitoring
+  labels:
+    app: wireguard-exporter
+spec:
+  selector:
+    matchLabels:
+      app: wireguard-exporter
+  template:
+    metadata:
+      labels:
+        app: wireguard-exporter
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9586"
+    spec:
+      hostNetwork: true
+      hostPID: true
+      containers:
+      - name: wireguard-exporter
+        image: mindflavor/prometheus_wireguard_exporter:3.6.0
+        args: ["--port", "9586"]
+        securityContext:
+          privileged: true
+        ports:
+        - name: metrics
+          containerPort: 9586
+          hostPort: 9586
+        resources:
+          limits:
+            cpu: 50m
+            memory: 50Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wireguard-exporter
+  namespace: monitoring
+  labels:
+    app: wireguard-exporter
+spec:
+  type: ClusterIP
+  ports:
+  - name: metrics
+    port: 9586
+    targetPort: 9586
+  selector:
+    app: wireguard-exporter
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: wireguard-exporter
+  namespace: monitoring
+  labels:
+    app: wireguard-exporter
+spec:
+  selector:
+    matchLabels:
+      app: wireguard-exporter
+  namespaceSelector:
+    matchNames:
+      - monitoring
+  endpoints:
+    - port: metrics
+      interval: 30s
+      path: /metrics
