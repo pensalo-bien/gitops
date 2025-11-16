@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - grafana/
   - nginx/
-  - sfera-web/
+  - sfera-daemon/
