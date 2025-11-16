@@ -73,3 +73,8 @@ spec:
     kind: GitRepository
     name: flux-system
 ```
+
+
+#create a pull secret
+kubectl create secret docker-registry ghcr -n sfera --docker-server=https://ghcr.io --docker-username=pensalo-bien --docker-password=abcde --docker-email=a@a.a 
+

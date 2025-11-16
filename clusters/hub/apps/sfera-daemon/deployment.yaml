@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sfera-daemon
+  namespace: sfera
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sfera-daemon
+  template:
+    metadata:
+      labels:
+        app: sfera-daemon
+    spec:
+      containers:
+        - name: sfera-daemon
+          image: ghcr.io/sferatechnology/sfera:sfera-main
+          imagePulSecret: ghcr
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: sfera-data-db
+              mountPath: /app/database
+      volumes:
+        - name: sfera-data-db
+          persistentVolumeClaim:
+            claimName: sfera-data-db
+
