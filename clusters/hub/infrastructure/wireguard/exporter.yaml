@@ -15,14 +15,14 @@ spec:
         app: wireguard-exporter
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "9586"
+        prometheus.io/port: "9587"
     spec:
       hostNetwork: true
       hostPID: true
       containers:
       - name: wireguard-exporter
         image: mindflavor/prometheus-wireguard-exporter:3.6.6
-        args: ["--port", "9586"]
+        args: ["--port", "9587"]
         securityContext:
           privileged: true
         ports:
