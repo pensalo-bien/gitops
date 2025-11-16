@@ -14,11 +14,11 @@ spec:
       labels:
         app: sfera-daemon
     spec:
+      imagePulSecrets:
+        - name: ghcr
       containers:
         - name: sfera-daemon
           image: ghcr.io/sferatechnology/sfera:sfera-main
-          imagePulSecrets:
-            - name: ghcr
           ports:
             - containerPort: 80
           volumeMounts:
