@@ -17,7 +17,8 @@ spec:
       containers:
         - name: sfera-daemon
           image: ghcr.io/sferatechnology/sfera:sfera-main
-          imagePulSecret: ghcr
+          imagePulSecrets:
+            - name: ghcr
           ports:
             - containerPort: 80
           volumeMounts:
