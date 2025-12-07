@@ -16,6 +16,10 @@ data:
           - targets:
             - 10.1.1.67:9586
       - job_name: caddy
+        metric_relabel_configs:
+          - source_labels: [__name__]
+            regex: "caddy_.*"
+            action: keep
         scrape_interval: 4s
         scrape_timeout: 1s
         static_configs:
