@@ -15,6 +15,9 @@ data:
         static_configs:
           - targets:
             - 10.1.1.67:9586
+      - job_name: caddy
+        static_configs:
+          - targets: ['caddy.sfera.svc.cluster.local:9158']
 ---
 apiVersion: apps/v1
 kind: Deployment

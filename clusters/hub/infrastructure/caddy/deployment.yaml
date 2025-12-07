@@ -33,6 +33,7 @@ metadata:
 spec:
   ports:
     - port: 8080
+    - port: 9158 #prometheus
   selector:
     app: caddy
 ---
