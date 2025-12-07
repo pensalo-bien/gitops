@@ -32,8 +32,10 @@ metadata:
   namespace: sfera
 spec:
   ports:
-    - port: 8080
-    - port: 9158 #prometheus
+    - name: web-port
+      port: 8080
+    - name: prometheus-port
+      port: 9158 #prometheus
   selector:
     app: caddy
 ---
