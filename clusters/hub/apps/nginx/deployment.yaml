@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-static-content
-  namespace: default
+  namespace: sfera
 data:
   index.html: |
     <html>
@@ -17,7 +17,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-test
-  namespace: default
+  namespace: sfera
 spec:
   replicas: 1
   selector:
@@ -36,16 +36,26 @@ spec:
           volumeMounts:
             - name: static
               mountPath: /usr/share/nginx/html/
+            - name: sfera-data-db
+              mountPath: /app/database
+            - name: sfera-caddy
+              mountPath: /app/caddy
       volumes:
         - name: static
           configMap:
             name: nginx-static-content
+        - name: sfera-caddy
+          persistentVolumeClaim:
+            claimName: sfera-caddy
+        - name: sfera-data-db
+          persistentVolumeClaim:
+            claimName: sfera-data-db
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: nginx-test
-  namespace: default
+  namespace: sfera
 spec:
   selector:
     app: nginx-test
@@ -59,7 +69,7 @@ apiVersion:  traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: nginx-test
-  namespace: default
+  namespace: sfera
 spec:
   entryPoints:
     - web
