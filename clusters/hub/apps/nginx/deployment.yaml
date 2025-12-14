@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: awscli
-          image: amazon/awscli
+          image: amazon/aws-cli:2.32.16
           volumeMounts:
             - name: sfera-data-db
               mountPath: /app/database
