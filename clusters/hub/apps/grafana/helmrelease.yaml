@@ -12,12 +12,14 @@ spec:
         kind: HelmRepository
         name: grafana
         namespace: flux-system
-      version: "7.x.x"
+      version: "10.3.1"
   install:
     createNamespace: true
   values:
     persistence:
-      enabled: false
+      enabled: true
+      type: pvc
+      size: 2Gi
     adminUser: admin
     adminPassword: admin
     service:
