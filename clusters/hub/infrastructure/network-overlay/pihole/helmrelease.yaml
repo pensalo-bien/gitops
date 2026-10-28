@@ -1,0 +1,96 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: pihole
+  namespace: network-overlay
+spec:
+  interval: 15m
+
+  chart:
+    spec:
+      chart: pihole
+      version: "2.38.0"
+      sourceRef:
+        kind: HelmRepository
+        name: pihole
+        namespace: network-overlay
+      interval: 24h
+
+  install:
+    remediation:
+      retries: 3
+
+  upgrade:
+    remediation:
+      retries: 3
+
+  values:
+    replicaCount: 1
+    strategyType: Recreate
+
+    image:
+      repository: pihole/pihole
+      pullPolicy: IfNotPresent
+
+    # DNS esposto sull'IP LAN del nodo
+    hostNetwork: "false"
+
+    dnsHostPort:
+      enabled: true
+      port: 53
+
+    # Il router continuerà a gestire il DHCP
+    serviceDhcp:
+      enabled: false
+
+    # Il Service DNS interno non è il punto di accesso
+    # utilizzato dai dispositivi della LAN.
+    serviceDns:
+      type: ClusterIP
+      mixedService: true
+      port: 53
+
+    # Dashboard accessibile inizialmente tramite port-forward
+    serviceWeb:
+      type: ClusterIP
+      http:
+        enabled: true
+        port: 80
+      https:
+        enabled: false
+
+    persistentVolumeClaim:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
+      storageClass: local-path
+
+    admin:
+      enabled: true
+      existingSecret: pihole-admin
+      passwordKey: password
+
+    # Resolver upstream: Quad9
+    DNS1: "9.9.9.9"
+    DNS2: "149.112.112.112"
+
+    # Evita di configurare manualmente i resolver del pod
+    podDnsConfig:
+      enabled: false
+
+    extraEnvVars:
+      FTLCONF_dns_listeningMode: "all"
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        memory: 384Mi
+
+    # Non importiamo ancora liste aggressive.
+    adlists: {}
+    whitelist: {}
+    blacklist: {}
+    regex: {}
