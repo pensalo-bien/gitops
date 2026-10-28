@@ -31,6 +31,7 @@ spec:
     image:
       repository: pihole/pihole
       pullPolicy: IfNotPresent
+      tag: "2026.10.0"
 
     # DNS esposto sull'IP LAN del nodo
     hostNetwork: "false"
