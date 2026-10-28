@@ -10,7 +10,7 @@ spec:
   ref:
     branch: master
   secretRef:
-    name: flux-system
+    name: gitops-auth
   url: ssh://git@github.com/pensalo-bien/gitops
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
