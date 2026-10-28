@@ -72,8 +72,8 @@ spec:
       passwordKey: password
 
     # Resolver upstream: Quad9
-    DNS1: "9.9.9.9"
-    DNS2: "149.112.112.112"
+    DNS1: "1.1.1.1"
+    DNS2: "8.8.8.8"
 
     # Evita di configurare manualmente i resolver del pod
     podDnsConfig:
